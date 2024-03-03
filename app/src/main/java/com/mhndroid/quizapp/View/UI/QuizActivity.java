@@ -29,6 +29,9 @@ import com.mhndroid.quizapp.ViewModel.QuestionViewModel;
 import java.util.HashMap;
 import java.util.List;
 
+import ru.noties.jlatexmath.JLatexMathDrawable;
+import ru.noties.jlatexmath.JLatexMathView;
+
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener {
     // ViewModel for question data
     QuestionViewModel viewModel;
@@ -37,7 +40,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     // UI components
     private ProgressBar progressBar , Qprogress;
     private Button option1Btn, option2Btn, option3Btn, nextQueBtn;
-    private TextView questionTv, ansFeedBackTv, questionNumberTv, timerCountTv;
+    private TextView  ansFeedBackTv, questionNumberTv, timerCountTv;
+
+    private JLatexMathView questionTv;
 
 
     // Quiz state variables
@@ -137,7 +142,14 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onChanged(List<QuestionModel> questionModels) {
                 Qprogress.setVisibility(View.GONE);
-                questionTv.setText(String.valueOf(currentQueNo) + ") " + questionModels.get(i - 1).getQuestion());
+                final JLatexMathDrawable drawable = JLatexMathDrawable.builder(String.valueOf(currentQueNo) + ") " +questionModels.get(i - 1).getQuestion()
+                        )
+                        .textSize(50)
+                        .padding(8)
+                        .background(0xFFffffff)
+                        .align(JLatexMathDrawable.ALIGN_RIGHT)
+                        .build();
+                questionTv.setLatexDrawable(drawable);
                 option1Btn.setText(questionModels.get(i - 1).getOption_a());
                 option2Btn.setText(questionModels.get(i - 1).getOption_b());
                 option3Btn.setText(questionModels.get(i - 1).getOption_c());
